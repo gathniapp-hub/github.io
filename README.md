@@ -75,11 +75,15 @@
         .form-group label { display: block; font-size: 13px; color: #64748b; margin-bottom: 5px; }
         .btn-full { width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
-        /* Rate Table / Judai Chart */
-        .rate-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-        .rate-table th, .rate-table td { border: 1px solid #cbd5e1; padding: 6px; text-align: center; }
-        .rate-table th { background: #f1f5f9; }
-        .rate-in { width: 100%; border: none; background: transparent; text-align: center; font-size: 12px; outline: none; }
+        /* Rate Table / Judai Chart CSS Fixes */
+        .rate-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        .rate-table th, .rate-table td { border: 1px solid #cbd5e1; padding: 8px 4px; text-align: center; }
+        .rate-table th { background: #0f172a; color: white; font-weight: 600; }
+        .rate-table td b { color: #0f172a; font-size: 14px; }
+        
+        /* Input Box Styling For Visibility */
+        .rate-in { width: 100%; border: none; background: transparent; text-align: center; font-size: 14px; font-weight: bold; color: #000000 !important; outline: none; padding: 4px 0; }
+        .rate-in:disabled { background: transparent; color: #000000 !important; -webkit-text-fill-color: #000000 !important; opacity: 1; }
 
         /* Photo Upload Container */
         .photo-upload-box { width: 90px; height: 90px; border: 2px dashed #cbd5e1; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; margin: 0 auto 15px auto; background: #f8fafc; overflow: hidden; }

@@ -15,7 +15,7 @@
         
         /* Header */
         header { background-color: #0f172a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; }
-        .header-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid white; padding-bottom: 2px; }
+        .header-title { font-size: 18px; font-weight: bold; }
         .menu-icon { font-size: 24px; cursor: pointer; color: #60a5fa; }
         
         /* Filters */
@@ -40,8 +40,8 @@
         .badge-rate { background: #fef3c7; color: #b45309; }
         
         /* Action Buttons on Card */
-        .card-actions { display: flex; flex-direction: column; gap: 6px; min-width: 75px; align-items: center; justify-content: center; }
-        .action-btn { width: 100%; border: none; padding: 7px 5px; border-radius: 6px; font-size: 12px; font-weight: 600; color: white; cursor: pointer; text-align: center; }
+        .card-actions { display: flex; flex-direction: column; gap: 6px; min-width: 80px; align-items: center; justify-content: center; }
+        .action-btn { width: 100%; border: none; padding: 8px 6px; border-radius: 6px; font-size: 12px; font-weight: 600; color: white; cursor: pointer; text-align: center; }
         .call-btn { background-color: #3b82f6; }
         .rate-btn { background-color: #f59e0b; }
         .busy-text { color: #ef4444; font-weight: 700; font-size: 14px; }
@@ -63,7 +63,7 @@
         .cancel-btn { background: #e2e8f0; color: #475569; }
 
         /* Side Menus */
-        .side-menu { position: fixed; top: 0; width: 80%; max-width: 300px; height: 100%; background: white; z-index: 60; transition: 0.3s; padding: 20px; overflow-y: auto; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+        .side-menu { position: fixed; top: 0; width: 85%; max-width: 320px; height: 100%; background: white; z-index: 60; transition: 0.3s; padding: 20px; overflow-y: auto; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
         .left-menu { left: -100%; }
         .right-menu { right: -100%; }
         .open-left { left: 0; }
@@ -74,6 +74,20 @@
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 13px; color: #64748b; margin-bottom: 5px; }
         .btn-full { width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        /* Rate Table / Judai Chart */
+        .rate-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        .rate-table th, .rate-table td { border: 1px solid #cbd5e1; padding: 6px; text-align: center; }
+        .rate-table th { background: #f1f5f9; }
+        .rate-in { width: 100%; border: none; background: transparent; text-align: center; font-size: 12px; outline: none; }
+
+        /* Photo Upload Container */
+        .photo-upload-box { width: 90px; height: 90px; border: 2px dashed #cbd5e1; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; margin: 0 auto 15px auto; background: #f8fafc; overflow: hidden; }
+        .photo-upload-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .photo-upload-box span { font-size: 10px; color: #64748b; text-align: center; padding: 5px; z-index: 5; }
+
+        /* Chips for admin editor */
+        .chip { display: inline-flex; align-items: center; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-size: 12px; gap: 5px; margin-right: 5px; margin-bottom: 5px; }
         
         /* Chat Box */
         #chatPage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 80; flex-direction: column; }
@@ -144,24 +158,39 @@
     <div id="overlay" onclick="closeMenus()"></div>
 
     <div id="leftMenu" class="side-menu left-menu">
-        <div class="menu-title">Admin Panel <span style="float:right; cursor:pointer;" onclick="closeMenus()">✖</span></div>
+        <div class="menu-title">Judai / Rate Chart <span style="float:right; cursor:pointer;" onclick="closeMenus()">✖</span></div>
         
-        <div id="adminLoginArea">
-            <p style="font-size:13px;">Sirf Admin ke liye</p>
+        <table class="rate-table">
+            <thead>
+                <tr>
+                    <th>Taag</th>
+                    <th>C</th>
+                    <th>CA</th>
+                    <th>P</th>
+                    <th>PA</th>
+                </tr>
+            </thead>
+            <tbody id="rateBody">
+                </tbody>
+        </table>
+        <button id="saveRateBtn" class="btn-full" onclick="saveRates()" style="display:none; background:#10b981; margin-bottom:20px;">💾 Save Rate Chart</button>
+
+        <div id="adminLoginArea" style="border-top:2px solid #e2e8f0; margin-top:20px; padding-top:15px;">
+            <p style="font-size:13px; font-weight:bold;">Admin Panel Login</p>
             <input type="password" id="adminPass" placeholder="Admin Password" style="margin-bottom:10px;">
-            <button class="btn-full" onclick="checkAdmin()">Login</button>
+            <button class="btn-full" onclick="checkAdmin()">Login As Admin</button>
         </div>
 
-        <div id="adminPanel" style="display:none;">
+        <div id="adminPanel" style="display:none; border-top:2px solid #e2e8f0; margin-top:20px; padding-top:15px;">
             <button class="btn-full" onclick="logoutAdmin()" style="background:#ef4444; margin-bottom:15px;">Logout Admin</button>
             
             <div class="form-group">
                 <label>Add New Category</label>
                 <div style="display:flex; gap:5px;">
-                    <input type="text" id="newCat" placeholder="Eg: Taag Jodne">
+                    <input type="text" id="newCat" placeholder="Eg: Cotton Jodne">
                     <button onclick="addCat()" style="padding:10px; background:#10b981; color:white; border:none; border-radius:6px;">Add</button>
                 </div>
-                <div id="catEditor" style="margin-top:10px; font-size:12px; display:flex; flex-wrap:wrap; gap:5px;"></div>
+                <div id="catEditor" style="margin-top:10px;"></div>
             </div>
 
             <div class="form-group">
@@ -170,13 +199,13 @@
                     <input type="text" id="newLoc" placeholder="Eg: 60 Futi">
                     <button onclick="addLoc()" style="padding:10px; background:#10b981; color:white; border:none; border-radius:6px;">Add</button>
                 </div>
-                <div id="locEditor" style="margin-top:10px; font-size:12px; display:flex; flex-wrap:wrap; gap:5px;"></div>
+                <div id="locEditor" style="margin-top:10px;"></div>
             </div>
 
             <div style="border-top:1px solid #e2e8f0; margin-top:20px; padding-top:15px;">
                 <b>Add Worker (Admin)</b>
                 <input type="text" id="admName" placeholder="Worker Name" style="margin-top:10px;">
-                <input type="number" id="admPhone" placeholder="Phone Number (No +91)" style="margin-top:10px;">
+                <input type="number" id="admPhone" placeholder="Phone Number" style="margin-top:10px;">
                 <select id="admCat" style="margin-top:10px;"></select>
                 <select id="admLoc" style="margin-top:10px;"></select>
                 <select id="admShift" style="margin-top:10px;">
@@ -191,6 +220,12 @@
     <div id="rightMenu" class="side-menu right-menu">
         <div class="menu-title">My Profile <span style="float:right; cursor:pointer;" onclick="closeMenus()">✖</span></div>
         
+        <div class="photo-upload-box" onclick="document.getElementById('photoInput').click()">
+            <img id="previewImg" style="display:none;">
+            <span id="photoText">📷<br>Upload Photo</span>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="previewPhoto(this)">
+
         <div class="form-group">
             <label>Full Name</label>
             <input type="text" id="wName" placeholder="Aapka Naam">
@@ -215,6 +250,25 @@
             </select>
         </div>
         <button class="btn-full" onclick="saveProfile()" style="background:#10b981;">Save Profile</button>
+
+        <div id="myStatusArea" style="display:none; border-top:2px solid #e2e8f0; margin-top:25px; padding-top:15px;">
+            <b>Set My Status (Busy Settings)</b>
+            <div class="form-group" style="margin-top:10px;">
+                <label>Kitne ghante busy rehna hai?</label>
+                <select id="busyHours">
+                    <option value="1">1 Hour</option>
+                    <option value="2">2 Hours</option>
+                    <option value="2.5">2.5 Hours</option>
+                    <option value="4">4 Hours</option>
+                    <option value="12">12 Hours</option>
+                    <option value="999">Hamesha ke liye (Full Busy)</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button onclick="setBusy()" style="flex:1; padding:10px; background:#ef4444; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Set Busy</button>
+                <button onclick="setFree()" style="flex:1; padding:10px; background:#10b981; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Set Free</button>
+            </div>
+        </div>
     </div>
 
     <div id="chatPage">
@@ -233,7 +287,7 @@
     </div>
 
     <script>
-        // Firebase Configuration (Aapki Same keys)
+        // Firebase Configuration
         const firebaseConfig = { 
             apiKey: "AIzaSyAi-eed_fIWaj3GQVleMzD7Fz4ppS_voxQ", 
             databaseURL: "https://gathni-app-default-rtdb.firebaseio.com" 
@@ -247,7 +301,20 @@
         let activeRatingId = "";
         let selectedStarCount = 5;
 
-        // Admin checks
+        // Dynamic Judai/Rate Chart Generator (2000 to 3400)
+        let rBody = "";
+        for(let t=2000; t<=3400; t+=100) {
+            rBody += `<tr>
+                <td><b>${t}</b></td>
+                <td><input type="text" id="c${t}" class="rate-in" disabled></td>
+                <td><input type="text" id="ca${t}" class="rate-in" disabled></td>
+                <td><input type="text" id="p${t}" class="rate-in" disabled></td>
+                <td><input type="text" id="pa${t}" class="rate-in" disabled></td>
+            </tr>`;
+        }
+        document.getElementById('rateBody').innerHTML = rBody;
+
+        // Admin Auth System
         function checkAdmin() { 
             if(document.getElementById('adminPass').value === 'malegaongathni.app') { 
                 localStorage.setItem('admin_auth', 'true'); location.reload(); 
@@ -258,14 +325,20 @@
         if(isAdmin) { 
             document.getElementById('adminLoginArea').style.display = 'none'; 
             document.getElementById('adminPanel').style.display = 'block'; 
+            document.getElementById('saveRateBtn').style.display = 'block'; 
+            document.querySelectorAll('.rate-in').forEach(input => input.disabled = false);
         }
 
         // Side Menus Logic
         function toggleMenu(side) { 
-            if(side === 'left') document.getElementById('leftMenu').classList.add('open-left'); 
+            if(side === 'left') {
+                document.getElementById('leftMenu').classList.add('open-left'); 
+                loadRates();
+            }
             if(side === 'right') {
                 document.getElementById('rightMenu').classList.add('open-right');
                 loadMyProfile(); 
+                if(myWorkerId) { document.getElementById('myStatusArea').style.display = 'block'; }
             }
             document.getElementById('overlay').style.display = 'block'; 
         }
@@ -275,14 +348,55 @@
             document.getElementById('overlay').style.display = 'none'; 
         }
 
-        // Load Categories & Locations dynamically from Firebase
+        // Base64 Photo Upload Handler
+        function previewPhoto(input) { 
+            if (input.files && input.files[0]) { 
+                let reader = new FileReader(); 
+                reader.onload = function(e) { 
+                    document.getElementById('previewImg').src = e.target.result; 
+                    document.getElementById('previewImg').style.display = 'block'; 
+                    document.getElementById('photoText').style.display = 'none'; 
+                    base64Photo = e.target.result; 
+                }; 
+                reader.readAsDataURL(input.files[0]); 
+            } 
+        }
+
+        // Judai Rate Chart Database Functions
+        function saveRates() {
+            let ratesData = {};
+            for(let t=2000; t<=3400; t+=100) {
+                ratesData[t] = {
+                    c: document.getElementById('c'+t).value || "", ca: document.getElementById('ca'+t).value || "",
+                    p: document.getElementById('p'+t).value || "", pa: document.getElementById('pa'+t).value || ""
+                };
+            }
+            db.ref('rates').set(ratesData).then(() => { alert("✅ Judai Rate Chart Save Ho Gaya!"); });
+        }
+
+        function loadRates() {
+            db.ref('rates').once('value', snap => {
+                let data = snap.val();
+                if(!data) return;
+                for(let t=2000; t<=3400; t+=100) {
+                    if(data[t]) {
+                        if(document.getElementById('c'+t)) document.getElementById('c'+t).value = data[t].c || "";
+                        if(document.getElementById('ca'+t)) document.getElementById('ca'+t).value = data[t].ca || "";
+                        if(document.getElementById('p'+t)) document.getElementById('p'+t).value = data[t].p || "";
+                        if(document.getElementById('pa'+t)) document.getElementById('pa'+t).value = data[t].pa || "";
+                    }
+                }
+            });
+        }
+
+        // Dynamic Setup Categories & Locations
         db.ref('categories').on('value', snap => { 
             let cats = snap.val() || { "default": "Gathni / Taag Jodne" }; 
             let opt = "", optF = "<option value='All'>All Categories</option>", ed = ""; 
             for(let id in cats) {
                 opt += `<option value="${cats[id]}">${cats[id]}</option>`; 
                 optF += `<option value="${cats[id]}">${cats[id]}</option>`;
-                ed += `<span style="background:#f1f5f9; padding:4px 8px; border-radius:4px;">${cats[id]} <b onclick="db.ref('categories/${id}').remove()" style="color:red; cursor:pointer; margin-left:5px;">✖</b></span>`;
+                ed += `<span class="chip">${cats[id]} <b onclick="db.ref('categories/${id}').remove()" style="color:red; cursor:pointer;">✖</b></span>`;
             }
             document.getElementById('wCat').innerHTML = opt; document.getElementById('admCat').innerHTML = opt; document.getElementById('catFilter').innerHTML = optF; 
             if(isAdmin) document.getElementById('catEditor').innerHTML = ed; fetchWorkers(); 
@@ -295,14 +409,14 @@
             for(let id in locs) {
                 opt += `<option value="${locs[id]}">${locs[id]}</option>`; 
                 optF += `<option value="${locs[id]}">${locs[id]}</option>`;
-                ed += `<span style="background:#f1f5f9; padding:4px 8px; border-radius:4px;">${locs[id]} <b onclick="db.ref('locations/${id}').remove()" style="color:red; cursor:pointer; margin-left:5px;">✖</b></span>`;
+                ed += `<span class="chip">${locs[id]} <b onclick="db.ref('locations/${id}').remove()" style="color:red; cursor:pointer;">✖</b></span>`;
             }
             document.getElementById('wLoc').innerHTML = opt; document.getElementById('admLoc').innerHTML = opt; document.getElementById('locFilter').innerHTML = optF; 
             if(isAdmin) document.getElementById('locEditor').innerHTML = ed; fetchWorkers(); 
         });
         function addLoc() { let v = document.getElementById('newLoc').value; if(v) { db.ref('locations').push(v); document.getElementById('newLoc').value=""; } }
 
-        // Fetch & Display Workers
+        // Fetch & Build Worker Cards
         function fetchWorkers() { 
             let fc = document.getElementById('catFilter').value, fl = document.getElementById('locFilter').value, fs = document.getElementById('shiftFilter').value; 
             db.ref('workers').on('value', snap => { 
@@ -317,7 +431,6 @@
                     }
                 }
                 
-                // Sort by time
                 freeWorkers.sort((a, b) => (a.busyUntil || 0) - (b.busyUntil || 0));
                 busyWorkers.sort((a, b) => (a.busyUntil || 0) - (b.busyUntil || 0));
 
@@ -353,7 +466,7 @@
             }); 
         }
 
-        // Profile Logic
+        // Profile Load & Save Management
         function loadMyProfile() {
             if(myWorkerId) {
                 db.ref('workers/' + myWorkerId).once('value', snap => {
@@ -364,19 +477,27 @@
                         document.getElementById('wLoc').value = d.loc || "";
                         document.getElementById('wCat').value = d.cat || "";
                         document.getElementById('wShift').value = d.shift || "Din";
+                        if(d.photo) {
+                            document.getElementById('previewImg').src = d.photo;
+                            document.getElementById('previewImg').style.display = 'block';
+                            document.getElementById('photoText').style.display = 'none';
+                            base64Photo = d.photo;
+                        }
                     }
                 });
             }
         }
 
         function saveProfile() {
-            let data = { name: document.getElementById('wName').value, phone: document.getElementById('wPhone').value, loc: document.getElementById('wLoc').value, cat: document.getElementById('wCat').value, shift: document.getElementById('wShift').value, photo: base64Photo, calls: 0 };
-            if(!data.name || !data.phone) return alert("Naam aur Number zaruri hai!");
+            let name = document.getElementById('wName').value, phone = document.getElementById('wPhone').value, loc = document.getElementById('wLoc').value, cat = document.getElementById('wCat').value, shift = document.getElementById('wShift').value;
+            if(!name || !phone) return alert("Naam aur Number zaruri hai!");
+            
+            let data = { name: name, phone: phone, loc: loc, cat: cat, shift: shift, photo: base64Photo };
             
             if(myWorkerId) { 
                 db.ref('workers/'+myWorkerId).update(data).then(()=> { alert("Profile Update Ho Gayi!"); closeMenus(); }); 
             } else { 
-                data.busyUntil = Date.now(); data.totalStars = 0; data.ratingCount = 0;
+                data.busyUntil = Date.now(); data.calls = 0; data.totalStars = 0; data.ratingCount = 0;
                 let ref = db.ref('workers').push(); 
                 ref.set(data).then(()=>{ localStorage.setItem('my_worker_id', ref.key); alert("Profile Ban Gayi!"); closeMenus(); location.reload(); }); 
             }
@@ -388,7 +509,7 @@
             db.ref('workers').push({ name: name, phone: phone, loc: loc, cat: cat, shift: shift, photo: "", calls: 0, busyUntil: Date.now(), totalStars: 0, ratingCount: 0 }).then(() => { alert(name + " add ho gaya!"); document.getElementById('admName').value = ""; document.getElementById('admPhone').value = ""; });
         }
 
-        // Call & Busy System (3 Call = 2.5 Hrs Busy)
+        // Automated & Manual Busy Engine
         function makeCall(id, ph) { 
             let workerRef = db.ref('workers/' + id);
             workerRef.child('calls').transaction(function(currentCalls) {
@@ -397,7 +518,7 @@
                 if (committed) {
                     let totalCalls = snapshot.val();
                     if (totalCalls >= 3) {
-                        workerRef.update({ busyUntil: Date.now() + (2.5 * 3600000), calls: 0 }); // 2.5 hours busy
+                        workerRef.update({ busyUntil: Date.now() + (2.5 * 3600000), calls: 0 }); 
                     }
                 }
             });
@@ -405,14 +526,22 @@
         }
         
         function directBusy() {
-            if(!myWorkerId) return alert("Pehle right side se apni Profile banayein!");
+            if(!myWorkerId) return alert("Pehle apni Profile banayein!");
             if(confirm("Kya aap 2.5 ghante ke liye BUSY hona chahte hain?")) {
                 db.ref('workers/' + myWorkerId).update({ busyUntil: Date.now() + (2.5 * 3600000), calls: 0 }).then(() => alert("Aap 2.5 ghante ke liye BUSY ho gaye hain!"));
             }
         }
-        function setFree() { if(myWorkerId) db.ref('workers/'+myWorkerId).update({busyUntil: Date.now(), calls:0}); }
+        
+        function setBusy() { 
+            if(!myWorkerId) return alert("Pehle profile banayein!");
+            let hrs = parseFloat(document.getElementById('busyHours').value);
+            let timeUntil = hrs === 999 ? 9999999999999 : Date.now() + (hrs * 3600000);
+            db.ref('workers/' + myWorkerId).update({ busyUntil: timeUntil, calls: 0 }).then(() => { alert("Busy timing update ho gaya!"); closeMenus(); });
+        }
+        
+        function setFree() { if(myWorkerId) db.ref('workers/'+myWorkerId).update({busyUntil: Date.now(), calls:0}).then(() => alert("Aap ab Free ho gaye hain!")); }
 
-        // Busy Notification Checker
+        // Live Busy Notification Bar Auto-Refresh
         setInterval(() => {
             if(!myWorkerId) return;
             db.ref('workers/'+myWorkerId).once('value', snap => {
@@ -420,20 +549,22 @@
                 if(d && d.busyUntil > Date.now()) {
                     n.style.display = 'block';
                     let diff = d.busyUntil - Date.now();
-                    document.getElementById('timerDisplay').innerText = Math.floor(diff/3600000) + "h " + Math.floor((diff%3600000)/60000) + "m";
+                    if(d.busyUntil > 5000000000000) { document.getElementById('timerDisplay').innerText = "Hamesha Ke Liye"; }
+                    else { document.getElementById('timerDisplay').innerText = Math.floor(diff/3600000) + "h " + Math.floor((diff%3600000)/60000) + "m"; }
                 } else { n.style.display = 'none'; }
             });
         }, 5000);
 
-        // Rating System (1 Device = 1 Rating)
+        // Security Rating Engine (1 Device = 1 Rating Max)
         function openRatingModal(id, name) {
             if (localStorage.getItem('rated_' + id)) { alert("Aap is worker ko pehle hi rate kar chuke hain!"); return; }
             activeRatingId = id;
-            document.getElementById('rateWorkerName').innerText = name;
+            document.getElementById('rateWorkerName').innerText = name + " ko Rate Karein";
             selectStars(5); 
             document.getElementById('ratingModal').style.display = 'flex';
         }
         function closeRatingModal() { document.getElementById('ratingModal').style.display = 'none'; activeRatingId = ""; }
+        
         function selectStars(count) {
             selectedStarCount = count;
             let stars = document.getElementById('starSelector').children;
@@ -442,6 +573,7 @@
                 else { stars[i].innerText = "☆"; stars[i].style.color = "#cbd5e1"; }
             }
         }
+        
         function submitWorkerRating() {
             if(!activeRatingId) return;
             let ref = db.ref('workers/' + activeRatingId);
@@ -450,14 +582,14 @@
                 return worker;
             }, (error, committed) => {
                 if (committed) {
-                    localStorage.setItem('rated_' + activeRatingId, 'true'); // Save in device
+                    localStorage.setItem('rated_' + activeRatingId, 'true'); 
                     alert("Aapki rating save ho gayi! Shukriya.");
                     closeRatingModal();
                 } else { alert("Kuch problem aayi, baad mein try karein."); }
             });
         }
 
-        // Chat System
+        // Community Chat Engine
         function openChat() { document.getElementById('chatPage').style.display='flex'; loadChat(); if(isAdmin) document.getElementById('adminClearChat').style.display='inline-block'; }
         function closeChat() { document.getElementById('chatPage').style.display='none'; }
         function loadChat() { 
@@ -473,7 +605,6 @@
         function sendChatMsg() { let t = document.getElementById('chatMsg').value; if(t) { db.ref('chat').push({text:t, senderId: myWorkerId || 'admin'}); document.getElementById('chatMsg').value=""; } }
         function deleteMsg(k) { if(confirm("Message delete karein?")) db.ref('chat/'+k).remove(); }
         function clearAllChat() { if(confirm("Saare messages delete karein?")) db.ref('chat').remove(); }
-
     </script>
 </body>
 </html>

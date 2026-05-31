@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,14 +76,15 @@
         .form-group label { display: block; font-size: 13px; color: #64748b; margin-bottom: 5px; }
         .btn-full { width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
-        /* Rate Table / Judai Chart CSS Fixes */
-        .rate-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-        .rate-table th, .rate-table td { border: 1px solid #cbd5e1; padding: 8px 4px; text-align: center; }
-        .rate-table th { background: #0f172a; color: white; font-weight: 600; }
+        /* Rate Table / Judai Chart Container Fix */
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px; border: 1px solid #cbd5e1; border-radius: 6px; }
+        .rate-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 280px; }
+        .rate-table th, .rate-table td { border: 1px solid #cbd5e1; padding: 10px 6px; text-align: center; }
+        .rate-table th { background: #0f172a; color: white; font-weight: 600; position: sticky; top: 0; }
         .rate-table td b { color: #0f172a; font-size: 14px; }
         
         /* Input Box Styling For Visibility */
-        .rate-in { width: 100%; border: none; background: transparent; text-align: center; font-size: 14px; font-weight: bold; color: #000000 !important; outline: none; padding: 4px 0; }
+        .rate-in { width: 100%; border: none; background: transparent; text-align: center; font-size: 14px; font-weight: bold; color: #000000 !important; outline: none; padding: 2px 0; }
         .rate-in:disabled { background: transparent; color: #000000 !important; -webkit-text-fill-color: #000000 !important; opacity: 1; }
 
         /* Photo Upload Container */
@@ -164,19 +166,21 @@
     <div id="leftMenu" class="side-menu left-menu">
         <div class="menu-title">Judai / Rate Chart <span style="float:right; cursor:pointer;" onclick="closeMenus()">✖</span></div>
         
-        <table class="rate-table">
-            <thead>
-                <tr>
-                    <th>Taag</th>
-                    <th>C</th>
-                    <th>CA</th>
-                    <th>P</th>
-                    <th>PA</th>
-                </tr>
-            </thead>
-            <tbody id="rateBody">
-                </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="rate-table">
+                <thead>
+                    <tr>
+                        <th>Taag</th>
+                        <th>C</th>
+                        <th>CA</th>
+                        <th>P</th>
+                        <th>PA</th>
+                    </tr>
+                </thead>
+                <tbody id="rateBody">
+                    </tbody>
+            </table>
+        </div>
         <button id="saveRateBtn" class="btn-full" onclick="saveRates()" style="display:none; background:#10b981; margin-bottom:20px;">💾 Save Rate Chart</button>
 
         <div id="adminLoginArea" style="border-top:2px solid #e2e8f0; margin-top:20px; padding-top:15px;">
